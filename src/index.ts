@@ -22,6 +22,7 @@ MessageBot.registerExtension('bibliofile/afk', (ex, world) => {
   }
 
   world.addCommand('afk', (player, message) => {
+    if (player.name === 'SERVER') return
     triggers.set(player.name, message)
     ex.bot.send(getSettings().onSet, { name: player.name })
   })

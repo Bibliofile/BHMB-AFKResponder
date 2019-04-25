@@ -4,7 +4,7 @@
 	(factory(global['@bhmb/bot']));
 }(this, (function (bot) { 'use strict';
 
-var html = "<div class=\"container\">\r\n    <h3 class=\"title\">AFK Messages</h3>\r\n    <p>Players can now add messages when they go AFK by saying /afk &lt;message&gt;. Once they say something in chat again or leave the server, their message will be removed. SERVER's AFK message can only be removed with /afkclear. AFK messages will not be preserved between bot launches.</p>\r\n\r\n    <p><strong>Important:</strong> Server can not trigger AFK messages.</p>\r\n\r\n    <h3 class=\"title\">Commands</h3>\r\n    <ul>\r\n        <li>/afk &lt;message&gt; - Use this command to set an AFK message.</li>\r\n        <li>/afkclear &lt;name&gt; (Admin only) - Manually clear the AFK message of a player.</li>\r\n    </ul>\r\n\r\n    <h3 class=\"title\">Responses</h3>\r\n    <div class=\"afk_settings\">\r\n        <label>When a message is set: <input class=\"input\" data-setting=\"onSet\"/></label>\r\n        <label>When a message is cleared with the /afkclear command: <input class=\"input\" data-setting=\"onClear\"/></label>\r\n        <label>When someone's name who is afk is mentioned: <input class=\"input\" data-setting=\"onTrigger\"/></label>\r\n    </div>\r\n</div>\r\n";
+var html = "<div class=\"container\">\n    <h3 class=\"title\">AFK Messages</h3>\n    <p>Players can now add messages when they go AFK by saying /afk &lt;message&gt;. Once they say something in chat again or leave the server, their message will be removed. SERVER's AFK message can only be removed with /afkclear. AFK messages will not be preserved between bot launches.</p>\n\n    <p><strong>Important:</strong> Server can not trigger AFK messages.</p>\n\n    <h3 class=\"title\">Commands</h3>\n    <ul>\n        <li>/afk &lt;message&gt; - Use this command to set an AFK message.</li>\n        <li>/afkclear &lt;name&gt; (Admin only) - Manually clear the AFK message of a player.</li>\n    </ul>\n\n    <h3 class=\"title\">Responses</h3>\n    <div class=\"afk_settings\">\n        <label>When a message is set: <input class=\"input\" data-setting=\"onSet\"/></label>\n        <label>When a message is cleared with the /afkclear command: <input class=\"input\" data-setting=\"onClear\"/></label>\n        <label>When someone's name who is afk is mentioned: <input class=\"input\" data-setting=\"onTrigger\"/></label>\n    </div>\n</div>\n";
 
 bot.MessageBot.registerExtension('bibliofile/afk', (ex, world) => {
     const getSettings = () => Object.assign({
@@ -17,6 +17,8 @@ bot.MessageBot.registerExtension('bibliofile/afk', (ex, world) => {
         triggers.delete(name.toLocaleUpperCase());
     }
     world.addCommand('afk', (player, message) => {
+        if (player.name === 'SERVER')
+            return;
         triggers.set(player.name, message);
         ex.bot.send(getSettings().onSet, { name: player.name });
     });
